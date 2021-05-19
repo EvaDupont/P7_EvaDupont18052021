@@ -1,5 +1,5 @@
 const express = require('express'); /* Framework qui facilite la création de serveur*/
-//const bodyParser = require('body-parser'); /* module permettant d'extraire l'objet JSON de la dde POST et analyser le body de la requete*/
+const bodyParser = require('body-parser'); /* module permettant d'extraire l'objet JSON de la dde POST et analyser le body de la requete*/
 const path = require('path'); /*package pour manipuler et assurer les chemins vers les fichiers et les repertoires du code */
 const helmet = require('helmet'); /* protege l'application de certaines vulnérabilités*/
 const morgan = require('morgan'); /* package node permettant la journalisation des requetes */
@@ -27,6 +27,7 @@ app.use((req, res, next) => {
 app.use(morgan('tiny'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(helmet()); 
 
 app.use('/upload', express.static(path.join(__dirname, 'upload')));
