@@ -1,4 +1,6 @@
-'use strict';/*mode strict JS peut eliminer des erreurs silencieuses JS, permet une exécution plus rapide si prb lecture par le navigateur */ 
+/*installé avec sequelize init */
+
+'use strict';
 
 const fs = require('fs');
 const path = require('path');
@@ -33,7 +35,5 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-
-
 
 module.exports = db;

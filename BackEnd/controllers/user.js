@@ -5,6 +5,7 @@ const token = require("../middleware/token"); /* module qui génère le token*/
 const fs = require("fs");
 const { Op } = require("sequelize");
 
+/*inscription de l'user*/
 exports.signup = async (req, res) => {
   try {
     const user = await db.User.findOne({
@@ -36,21 +37,22 @@ exports.signup = async (req, res) => {
   }
 };
 
+/*connexion de l'user*/
 exports.login = async (req, res) => {
   try {
     const user = await db.User.findOne({
       where: { email: req.body.email },
-    }); // on vérifie que l'adresse mail figure bien dan la bdd
+    }); /* on vérifie que le mail existe bien dans la BDD*/
     if (user === null) {
       return res.status(403).send({ error: "Connexion échouée" });
     } else {
-      const hash = await bcrypt.compare(req.body.password, user.password); // on compare les mots de passes
+      const hash = await bcrypt.compare(req.body.password, user.password); /* on compare les MDP */
       if (!hash) {
         return res.status(401).send({ error: "Mot de passe incorrect !" });
       } else {
         const tokenObject = await token.issueJWT(user);
         res.status(200).send({
-          // on renvoie le user et le token
+          /* on confirme le log en renvoyant le token et l'user */
           user: user,
           token: tokenObject.token,
           sub: tokenObject.sub,
@@ -63,8 +65,9 @@ exports.login = async (req, res) => {
     return res.status(500).send({ error: "Erreur serveur" });
   }
 };
+
+/* on trouve l'user*/
 exports.getAccount = async (req, res) => {
-  // on trouve l'utilisateur et on renvoie l'objet user
   try {
     const user = await db.User.findOne({
       where: { id: req.params.id },
@@ -74,8 +77,9 @@ exports.getAccount = async (req, res) => {
     return res.status(500).send({ error: "Erreur serveur" });
   }
 };
+
+/*affiche tous les users*/
 exports.getAllUsers = async (req, res) => {
-  // on envoie tous les users sauf admin
   try {
     const users = await db.User.findAll({
       attributes: ["pseudo", "id", "photo", "bio", "email"],
@@ -90,13 +94,14 @@ exports.getAllUsers = async (req, res) => {
     return res.status(500).send({ error: "Erreur serveur" });
   }
 };
+
+/* modification du profil de l'user */
 exports.updateAccount = async (req, res) => {
-  // modifier le profil
   const id = req.params.id;
   try {
     const userId = token.getUserId(req);
     let newPhoto;
-    let user = await db.User.findOne({ where: { id: id } }); // on trouve le user
+    let user = await db.User.findOne({ where: { id: id } }); /*permet de trouver l'user concerné*/
     if (userId === user.id) {
       if (req.file && user.photo) {
         newPhoto = `${req.protocol}://${req.get("host")}/upload/${
@@ -104,7 +109,7 @@ exports.updateAccount = async (req, res) => {
         }`;
         const filename = user.photo.split("/upload")[1];
         fs.unlink(`upload/${filename}`, (err) => {
-          // s'il y avait déjà une photo on la supprime
+          /*suppression de la photo si elle existait deja*/
           if (err) console.log(err);
           else {
             console.log(`Deleted file: upload/${filename}`);
@@ -124,7 +129,7 @@ exports.updateAccount = async (req, res) => {
       if (req.body.pseudo) {
         user.pseudo = req.body.pseudo;
       }
-      const newUser = await user.save({ fields: ["pseudo", "bio", "photo"] }); // on sauvegarde les changements dans la bdd
+      const newUser = await user.save({ fields: ["pseudo", "bio", "photo"] }); /* chgt sauvegardé dans la BDD*/
       res.status(200).json({
         user: newUser,
         messageRetour: "Votre profil a bien été modifié",
@@ -138,6 +143,8 @@ exports.updateAccount = async (req, res) => {
     return res.status(500).send({ error: "Erreur serveur" });
   }
 };
+
+/*suppression du profil user */
 exports.deleteAccount = async (req, res) => {
   try {
     const id = req.params.id;
@@ -145,12 +152,12 @@ exports.deleteAccount = async (req, res) => {
     if (user.photo !== null) {
       const filename = user.photo.split("/upload")[1];
       fs.unlink(`upload/${filename}`, () => {
-        // sil' y a une photo on la supprime et on supprime le compte
+        /* suppression de la photo du compte et le compte */
         db.User.destroy({ where: { id: id } });
         res.status(200).json({ messageRetour: "utilisateur supprimé" });
       });
     } else {
-      db.User.destroy({ where: { id: id } }); // on supprime le compte
+      db.User.destroy({ where: { id: id } }); /* suppression du compte */
       res.status(200).json({ messageRetour: "utilisateur supprimé" });
     }
   } catch (error) {

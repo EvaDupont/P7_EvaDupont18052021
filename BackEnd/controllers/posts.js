@@ -1,7 +1,8 @@
-const token = require("../middleware/token");
-const db = require("../models"); // accès tables
-const fs = require("fs"); //
+const token = require("../middleware/token"); /* module qui génère le token*/
+const db = require("../models"); /*lien entre BDD et models*/
+const fs = require("fs"); /*package qui permet de modifier ou supprimer des fichiers */
 
+/*requete pour afficher tout les posts*/
 exports.getAllPosts = async (req, res) => {
   try {
     const posts = await db.Post.findAll({
@@ -36,7 +37,8 @@ exports.getAllPosts = async (req, res) => {
     });
   }
 };
-// afficher le sposts les plus likés
+
+/* requete pour afficher les posts les plus likés*/
 exports.getHotPosts = async (req, res) => {
   try {
     const posts = await db.Post.findAll({
@@ -84,10 +86,12 @@ exports.getHotPosts = async (req, res) => {
     });
   }
 };
+
+/* requete pour afficher un post en particulier */
 exports.getOnePost = async (req, res) => {
   try {
     const post = await db.Post.findOne({
-      // on récupère le post avec l'id fourni en incluant les tables et attributs nécessaires
+      /* on le recupére avec l'id en ajoutant les tables et attributs nécessaires*/
       where: { id: req.params.id },
       include: [
         {
@@ -116,6 +120,8 @@ exports.getOnePost = async (req, res) => {
     return res.status(500).send({ error: "Erreur serveur" });
   }
 };
+
+/*creation d'un post */
 exports.createPost = async (req, res) => {
   const userId = token.getUserId(req);
   let imageUrl;
@@ -144,7 +150,6 @@ exports.createPost = async (req, res) => {
         imageUrl: imageUrl,
         UserId: user.id,
       });
-
       res
         .status(201)
         .json({ post: post, messageRetour: "Votre post est ajouté" });
@@ -155,6 +160,8 @@ exports.createPost = async (req, res) => {
     return res.status(500).send({ error: "Erreur serveur" });
   }
 };
+
+/* suppression d'un post */
 exports.deletePost = async (req, res) => {
   try {
     const userId = token.getUserId(req);
@@ -179,6 +186,7 @@ exports.deletePost = async (req, res) => {
   }
 };
 
+/* modification d'un post */
 exports.updatePost = async (req, res) => {
   try {
     let newImageUrl;
@@ -216,6 +224,7 @@ exports.updatePost = async (req, res) => {
   }
 };
 
+/*permet de liker un post */
 exports.likePost = async (req, res, next) => {
   try {
     const userId = token.getUserId(req);
@@ -228,18 +237,20 @@ exports.likePost = async (req, res, next) => {
         { where: { UserId: userId, PostId: postId } },
         { truncate: true, restartIdentity: true }
       );
-      res.status(200).send({ messageRetour: "vou n'aimez plus ce post" });
+      res.status(200).send({ messageRetour: "Vous n'aimez plus ce post" });
     } else {
       await db.Like.create({
         UserId: userId,
         PostId: postId,
       });
-      res.status(201).json({ messageRetour: "vous aimez ce post" });
+      res.status(201).json({ messageRetour: "Vous aimez ce post" });
     }
   } catch (error) {
     return res.status(500).send({ error: "Erreur serveur" });
   }
 };
+
+/* ajouter un commentaire a un post */
 exports.addComment = async (req, res) => {
   try {
     const comment = req.body.commentMessage;
@@ -250,14 +261,15 @@ exports.addComment = async (req, res) => {
       UserId: token.getUserId(req),
       PostId: req.params.id,
     });
-
     res
       .status(201)
-      .json({ newComment, messageRetour: "votre commentaire est publié" });
+      .json({ newComment, messageRetour: "Votre commentaire est publié" });
   } catch (error) {
     return res.status(500).send({ error: "Erreur serveur" });
   }
 };
+
+/* supprimer le commentaire d 'un post */
 exports.deleteComment = async (req, res) => {
   try {
     const userId = token.getUserId(req);
