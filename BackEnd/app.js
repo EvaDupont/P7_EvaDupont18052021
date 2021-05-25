@@ -9,7 +9,7 @@ require('dotenv').config();/*securise l'envirement de connexion dans le dossier 
 const postsRoutes = require('./routes/posts');
 const userRoutes = require('./routes/user');
 
-/* Base de données */
+/* connection a la Base de données MySQL*/
 const { sequelize } = require('./models/index');
 
 const app = express();

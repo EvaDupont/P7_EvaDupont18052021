@@ -14,7 +14,7 @@ function setAdmin(req, res) {
               email: "admin@mail.com",
               password: hash,
               admin: true,
-            })
+              })
               .then((admin) => {
                 console.log({
                   admin,
