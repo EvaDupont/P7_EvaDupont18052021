@@ -3,7 +3,7 @@ const bodyParser = require('body-parser'); /* module permettant d'extraire l'obj
 const path = require('path'); /*package pour manipuler et assurer les chemins vers les fichiers et les repertoires du code */
 const helmet = require('helmet'); /* protege l'application de certaines vulnérabilités*/
 const morgan = require('morgan'); /* package node permettant la journalisation des requetes */
-require('dotenv').config();/*securise l'envirement de connexion dans le dossier .env */
+require('dotenv').config();/*securise l'environement de connexion dans le dossier .env */
 
 /*Routes */
 const postsRoutes = require('./routes/posts');
@@ -44,5 +44,7 @@ const dbTest = async function () {
   }
 };
 dbTest();
+
+
 
 module.exports = app;
