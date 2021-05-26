@@ -104,7 +104,7 @@ exports.getOnePost = async (req, res) => {
         },
         {
           model: db.Comment,
-          order: [["createdAt", "DESC"]],
+          order: [["createDate", "DESC"]],
           attributes: ["message", "pseudo", "UserId"],
           include: [
             {
