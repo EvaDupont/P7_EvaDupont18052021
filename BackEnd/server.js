@@ -1,6 +1,6 @@
 const http = require('http'); 
 const app = require('./app');
-const db = require("./models/index");
+//const db = require("./models/index");
 
 /* fonction renvoyant à un port valide*/
 const normalizePort = val => {
@@ -39,7 +39,17 @@ const errorHandler = error => {
 
 const server = http.createServer(app);
 
-/*sequelize : module de node.js qui permet à l’application de fonctionner MySQL*/
+server.on('error', errorHandler);
+server.on('listening', () => {
+  const address = server.address();
+  const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
+  console.log('Listening on ' + bind);
+});
+
+server.listen(port);
+
+
+/*sequelize : module de node.js qui permet à l’application de fonctionner MySQL
 db.sequelize.sync().then(function () {
     server.on('error', errorHandler);
     server.on('listening', () => {
@@ -49,5 +59,5 @@ db.sequelize.sync().then(function () {
 });
 server.listen(port);
 require("./config/admin"); /* la fonction setAdmin est appelée*/
-}); /*un écouteur d'évènements est également enregistré, 
+/*}); /*un écouteur d'évènements est également enregistré, 
 consignant le port ou le canal nommé sur lequel le serveur s'exécute dans la console.*/
