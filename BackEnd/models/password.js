@@ -10,4 +10,4 @@ passwordSchema
 .has().digits(2)                                // doit contenir deux chiffres
 .has().not().spaces();                         // ne doit pas contenir d'espace
 
-module.exports = schema;
+module.exports = passwordSchema;
