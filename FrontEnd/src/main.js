@@ -1,10 +1,10 @@
 import Vue from 'vue'
-import App from './App.vue'
+import App from './app.vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import Vuelidate from 'vuelidate'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import './assets/custom.scss'
+import './logo/custom.scss'
 import router from './router'
 import store from './store'
 
