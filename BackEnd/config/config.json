@@ -1,22 +1,22 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "database_development",
+    "username": "eva",
+    "password": "mdprseGP",
+    "database": "rseGP",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
+    "username": "eva",
+    "password": "mdprseGP",
+    "database": "rseGP",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
+    "username": "eva",
+    "password": "mdprseGP",
+    "database": "rseGP",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }
