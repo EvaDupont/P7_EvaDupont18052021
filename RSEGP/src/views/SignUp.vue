@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import Navbar from '@/composants/navbar.vue'
-import Sign from '@/composants/signIn.vue'
-import Footer from '@/composants/footer.vue'
+import Navbar from '@/components/navbar.vue'
+import Sign from '@/components/signIn.vue'
+import Footer from '@/components/footer.vue'
 export default {
   name: 'Signup', 
   components: {
