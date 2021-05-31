@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import Navbar from '@/components/navbar.vue'
-import Log from '@/components/logIn.vue'
-import Footer from '@/components/footer.vue'
+import Navbar from '@/components/Navbar.vue'
+import Log from '@/components/Log.vue'
+import Footer from '@/components/Footer.vue'
 export default {
   name: 'Login', 
   components: {

@@ -49,7 +49,7 @@
     
     <button class="btn btn-dark btn-sm" type="submit" @click.prevent="login">Connexion</button>
     </form>
-    <p> Pas encore inscrit ? Créez votre compte dès aujourd'hui !</p>
+    <p> Vous n'êtes pas encore sur le Réseau GROUPOMANIA ? Rejoignez-nous!</p>
     <button class="btn btn-dark btn-sm" @click.prevent="goSignin" >Inscription</button>
 </div>
 </template>
@@ -88,8 +88,8 @@ methods:{
                 localStorage.setItem("token",   res.data.token)
                 localStorage.setItem("userId",  res.data.userId)
                 console.log(res);
-                alert("Bienvenue ! Vous êtes connecté ! ");
-                this.$router.push('/myprofile');           
+                alert("Vous êtes connecté ! ");
+                this.$router.push('/monProfil');           
             })
             
         .catch(error => {

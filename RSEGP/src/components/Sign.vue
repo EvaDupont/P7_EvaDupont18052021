@@ -131,7 +131,7 @@ methods:{
 </script>
 
 <style scoped>
-.signin {
+.signIn {
     margin-top: 20px;
 }
 .btn {
