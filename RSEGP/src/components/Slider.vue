@@ -6,7 +6,7 @@
       :interval="5000"
       controls
       indicators
-      background="#ccc"
+      background="#cccS"
       style="text-shadow: 1px 1px 2px #000;"
       @sliding-start="onSlideStart"
       @sliding-end="onSlideEnd"
