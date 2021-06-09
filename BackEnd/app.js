@@ -10,8 +10,8 @@ require('dotenv').config();/*securise l'environement de connexion dans le dossie
 require("./db.config");
 
 /*Routes */
-const postsRoutes = require('./routes/posts');
-const userRoutes = require('./routes/user');
+const postsRoutes = require("./routes/posts");
+const userRoutes = require("./routes/user");
 const commentsRoutes = require("./routes/comments");
 
 /* connection a la Base de données MySQL*/

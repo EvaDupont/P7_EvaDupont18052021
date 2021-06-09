@@ -31,7 +31,7 @@ db.comment = require("./Comment")(sequelize, Sequelize)
 db.user.hasMany(db.post);
 
 db.post.belongsTo(db.user, {
-  foreignKey: "user_id",
+  foreignKey: "userId",
 });
 
 db.user.hasMany(db.comment);

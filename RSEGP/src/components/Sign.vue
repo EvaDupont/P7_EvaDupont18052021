@@ -106,7 +106,8 @@ validations: {
     }
 },
 methods:{
- signup() {
+ signup() { 
+     console.log('test')
       this.$v.$touch();
         this.submited = true;
         if (this.pseudo && this.email && this.password) {
