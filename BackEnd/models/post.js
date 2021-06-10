@@ -1,9 +1,16 @@
-'use strict';/*mode strict JS peut eliminer des erreurs silencieuses JS, permet une exécution plus rapide si prb lecture par le navigateur */
-const {Model} = require('sequelize');
+'use strict';
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Post extends Model {
-   
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
     static associate(models) {
+      // define association here
       models.Post.belongsTo(models.User, {
         foreignKey: {
           allowNull: false
@@ -23,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
 
-    modelName: 'Post', 
+    modelName: 'Post',
   });
   return Post;
 };

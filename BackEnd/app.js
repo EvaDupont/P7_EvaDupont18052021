@@ -1,46 +1,39 @@
-const express = require('express'); /* Framework qui facilite la création de serveur*/
-const bodyParser = require('body-parser'); /* module permettant d'extraire l'objet JSON de la dde POST et analyser le body de la requete*/
-const path = require('path'); /*package pour manipuler et assurer les chemins vers les fichiers et les repertoires du code */
-const helmet = require('helmet'); /* protege l'application de certaines vulnérabilités*/
-const xss = require('xss-clean');
-const rateLimit = require("express-rate-limit");
+const express = require('express');
+const morgan = require('morgan');
 const cors = require('cors');
+const path = require('path');
+const helmet = require('helmet'); // sécurisation injection
+require('dotenv').config();
 
-require('dotenv').config();/*securise l'environement de connexion dans le dossier .env */
-require("./db.config");
 
-/*Routes */
-const postsRoutes = require("./routes/posts");
-const userRoutes = require("./routes/user");
-const commentsRoutes = require("./routes/comments");
+//routes
+const userRoutes = require('./routes/user');
+const postsRoutes = require('./routes/posts');
 
-/* connection a la Base de données MySQL*/
-//const { sequelize } = require('./models/index');
+//db
+const { sequelize } = require('./models/index');
 
 const app = express();
 
-/*CORS Cross Origin Resource Sharing : systeme de sécurité qui empêche les requetes malveillantes*/
-/*ces headers permettent d'accéder au serveur depuis n'importe quelle origine + d'envoyer des requêtes avec les methodes GET, POST...*/
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-  next();
-});
-
+app.use(morgan('tiny'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(helmet()); 
-app.use(xss());
-app.use(rateLimit());
+app.use(cors()); // CORS - partage de ressources entre serveurs
+app.use(helmet()); // helmet
 
-app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/upload', express.static(path.join(__dirname, 'upload')));
+app.use('/api/users', userRoutes);
+app.use('/api/posts', postsRoutes);
 
-app.use(cors());
-app.use('/api/auth/post', postsRoutes);
-app.use('/api/auth', userRoutes);
-app.use('/api/auth', commentsRoutes);
 
+const dbTest = async function () {
+  try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+};
+dbTest();
 
 module.exports = app;

@@ -1,4 +1,4 @@
-'use strict';/*mode strict JS peut eliminer des erreurs silencieuses JS, permet une exécution plus rapide si prb lecture par le navigateur */
+'use strict';
 const {
   Model
 } = require('sequelize');
@@ -11,21 +11,24 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.Comment.belongsTo(models.User, {
-        foreignKey: 'userId'
-        
-      })
-      models.Comment.belongsTo(models.Post, {
-        foreignKey: 'postId'
-        
-      })
+      models.Comment.belongsTo(models.User, 
+        { foreignKey: {
+          allowNull: false
+         
+        }, onDelete:'CASCADE',
+      }),
+        models.Comment.belongsTo(models.Post, 
+          { foreignKey: {
+            allowNull: false,
+               
+          }, onDelete:'CASCADE',
+        })
     }
+    
   };
   Comment.init({
-    
-    content: DataTypes.STRING,
-    userId: DataTypes.INTEGER,
-    postId: DataTypes.INTEGER
+    message: { type: DataTypes.TEXT, allowNull: false },
+    pseudo: { type: DataTypes.STRING, allowNull: false },
   }, {
     sequelize,
     modelName: 'Comment',
