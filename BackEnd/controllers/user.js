@@ -1,98 +1,158 @@
-const bcrypt = require("bcrypt"); /*module de hachage securisé pour chiffrer les données rendant leur lecture impossible par un utilisateur malveillant 
-utilisation d'un hash = chaine chiffrée pour crypter le mdp*/
-const db = require("../models/index"); /* modèles de la bdd*/
-const jwt = require('jsonwebtoken');
-const MaskData = require("maskdata");
-const User = db.user;
+const bcrypt = require("bcrypt"); // chiffrement du password
+const db = require("../models"); // mdèles de la bdd
+const token = require("../middleware/token"); // module qui génère le token
+const fs = require("fs");
+const { Op } = require("sequelize");
 
-exports.signup = async (req, res, next) => {
-  
-  if (req.body.pseudo == null || req.body.email == null || req.body.password == null) {
-    return res.status(400).json({ 'error': 'Merci de renseigner tous les champs !'});
-  }
-    bcrypt.hash(req.body.password, 10)
-    .then(hash => {
-     const user = {
+exports.signup = async (req, res) => {
+  try {
+    const user = await db.User.findOne({
+      where: { email: req.body.email },
+    });
+    if (user !== null) {
+      if (user.pseudo === req.body.pseudo) {
+        return res.status(400).json({ error: "ce pseudo est déjà utilisé" });
+      }
+    } else {
+      const hash = await bcrypt.hash(req.body.password, 10);
+      const newUser = await db.User.create({
         pseudo: req.body.pseudo,
-        email: MaskData.maskEmail2(req.body.email),
+        email: req.body.email,
         password: hash,
-        isAdmin: 0
-      };
-      
-      User.create(user) 
-          .then(user => res.status(201).json( user ))
-      })
-    
-    .catch(error => res.status(500).json({ error }));
-      
-    }
-    exports.login = (req, res, next) => {  
-      
-      if ( !req.body.email && !req.body.password ) {
-        return res.status(400).json({message: "champ manquant"})
-    }
+        admin: false,
+      });
 
-      User.findOne({
-        where: {
-          email: MaskData.maskEmail2(req.body.email),
-        }
-      })
-        .then((user) => {
-          console.log(user);
-          if (!user) {
-            return res.status(401).json({ error: 'Utilisateur inconnu' });
-          }
-          console.log(req.body);
-          bcrypt.compare(req.body.password, user.password) 
-            .then((valid) => {
-              if (!valid) {
-                return res.status(401).json({ error: 'Utilisateur ou mot de passe erroné' });
-              }
-              res.status(200).json({
-                userId: user.id,
-                token: jwt.sign(
-                  { userId: user.id }, 'RANDOM_TOKEN_SECRET',
-                  { expiresIn: '24h' }),
-                });
-              
-            });
-        })
-        .catch((err) => {
-          res.status(500).json({ error: err });
-        });
-    };
-    exports.findByPk = (req, res) => {
-      User.findByPk(req.params.id).then((user) => {
-        res.status(200).json({
-          status: true,
-          data: user,
-        });
+      const tokenObject = await token.issueJWT(newUser);
+      res.status(201).send({
+        user: newUser,
+        token: tokenObject.token,
+        expires: tokenObject.expiresIn,
+        message: `Votre compte est bien créé ${newUser.pseudo} !`,
       });
-    };
-    exports.update = (req, res) => {
-      const id = req.params.id;
-      User.update(
-        {
-          pseudo: req.body.pseudo,
-          email: MaskData.maskEmail2(req.body.email),
-          password: hash,
-          isAdmin: 0
+    }
+  } catch (error) {
+    return res.status(400).send({ error: "email déjà utilisé" });
+  }
+};
+
+exports.login = async (req, res) => {
+  try {
+    const user = await db.User.findOne({
+      where: { email: req.body.email },
+    }); // on vérifie que l'adresse mail figure bien dan la bdd
+    if (user === null) {
+      return res.status(403).send({ error: "Connexion échouée" });
+    } else {
+      const hash = await bcrypt.compare(req.body.password, user.password); // on compare les mots de passes
+      if (!hash) {
+        return res.status(401).send({ error: "Mot de passe incorrect !" });
+      } else {
+        const tokenObject = await token.issueJWT(user);
+        res.status(200).send({
+          // on renvoie le user et le token
+          user: user,
+          token: tokenObject.token,
+          sub: tokenObject.sub,
+          expires: tokenObject.expiresIn,
+          message: "Bonjour " + user.pseudo + " !",
+        });
+      }
+    }
+  } catch (error) {
+    return res.status(500).send({ error: "Erreur serveur" });
+  }
+};
+exports.getAccount = async (req, res) => {
+  // on trouve l'utilisateur et on renvoie l'objet user
+  try {
+    const user = await db.User.findOne({
+      where: { id: req.params.id },
+    });
+    res.status(200).send(user);
+  } catch (error) {
+    return res.status(500).send({ error: "Erreur serveur" });
+  }
+};
+exports.getAllUsers = async (req, res) => {
+  // on envoie tous les users sauf admin
+  try {
+    const users = await db.User.findAll({
+      attributes: ["pseudo", "id", "photo", "bio", "email"],
+      where: {
+        id: {
+          [Op.ne]: 1,
         },
-        { where: { id: id } }
-      ).then(() => {
-        res.status(200).json({
-            status: true,
-            message: "Utilisateur modifié avec id = " + id
+      },
+    });
+    res.status(200).send(users);
+  } catch (error) {
+    return res.status(500).send({ error: "Erreur serveur" });
+  }
+};
+exports.updateAccount = async (req, res) => {
+  // modifier le profil
+  const id = req.params.id;
+  try {
+    const userId = token.getUserId(req);
+    let newPhoto;
+    let user = await db.User.findOne({ where: { id: id } }); // on trouve le user
+    if (userId === user.id) {
+      if (req.file && user.photo) {
+        newPhoto = `${req.protocol}://${req.get("host")}/upload/${
+          req.file.filename
+        }`;
+        const filename = user.photo.split("/upload")[1];
+        fs.unlink(`upload/${filename}`, (err) => {
+          // s'il y avait déjà une photo on la supprime
+          if (err) console.log(err);
+          else {
+            console.log(`Deleted file: upload/${filename}`);
+          }
         });
+      } else if (req.file) {
+        newPhoto = `${req.protocol}://${req.get("host")}/upload/${
+          req.file.filename
+        }`;
+      }
+      if (newPhoto) {
+        user.photo = newPhoto;
+      }
+      if (req.body.bio) {
+        user.bio = req.body.bio;
+      }
+      if (req.body.pseudo) {
+        user.pseudo = req.body.pseudo;
+      }
+      const newUser = await user.save({ fields: ["pseudo", "bio", "photo"] }); // on sauvegarde les changements dans la bdd
+      res.status(200).json({
+        user: newUser,
+        messageRetour: "Votre profil a bien été modifié",
       });
-    };
-    exports.delete = (req, res) => {
-      const id = req.params.id;
-      User.destroy({
-        where : { id: id }
-       })
-          .then(() => res.status(200).json({ message: 'Utilisateur supprimé' }))
-          .catch(error => res.status(500).json({ error }));
-        
-     
-    };
+    } else {
+      res
+        .status(400)
+        .json({ messageRetour: "Vous n'avez pas les droits requis" });
+    }
+  } catch (error) {
+    return res.status(500).send({ error: "Erreur serveur" });
+  }
+};
+exports.deleteAccount = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const user = await db.User.findOne({ where: { id: id } });
+    if (user.photo !== null) {
+      const filename = user.photo.split("/upload")[1];
+      fs.unlink(`upload/${filename}`, () => {
+        // sil' y a une photo on la supprime et on supprime le compte
+        db.User.destroy({ where: { id: id } });
+        res.status(200).json({ messageRetour: "utilisateur supprimé" });
+      });
+    } else {
+      db.User.destroy({ where: { id: id } }); // on supprime le compte
+      res.status(200).json({ messageRetour: "utilisateur supprimé" });
+    }
+  } catch (error) {
+    return res.status(500).send({ error: "Erreur serveur" });
+  }
+};
