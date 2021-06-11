@@ -1,22 +1,22 @@
 {
   "development": {
-    "username": "user",
+    "username": "newuser",
     "password": "password",
-    "database": "socialnetwork",
+    "database": "rseGP",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
-    "username": "user",
+    "username": "newuser",
     "password": "password",
-    "database": "socialnetwork",
+    "database": "rseGP",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
-    "username": "user",
+    "username": "newuser",
     "password": "password",
-    "database": "socialnetwork",
+    "database": "rseGP",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }
