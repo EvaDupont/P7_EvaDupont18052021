@@ -1,9 +1,11 @@
-const bcrypt = require("bcrypt"); // chiffrement du password
-const db = require("../models"); // mdèles de la bdd
-const token = require("../middleware/token"); // module qui génère le token
+const bcrypt = require("bcrypt"); /*module de hachage securisé pour chiffrer les données rendant leur lecture impossible par un utilisateur malveillant 
+utilisation d'un hash = chaine chiffrée pour crypter le mdp*/
+const db = require("../models"); /* modèles de la BDD*/
+const token = require("../middleware/token"); /* module qui génère le token*/
 const fs = require("fs");
 const { Op } = require("sequelize");
 
+/*inscription*/
 exports.signup = async (req, res) => {
   try {
     const user = await db.User.findOne({
@@ -35,6 +37,7 @@ exports.signup = async (req, res) => {
   }
 };
 
+/*connexion*/
 exports.login = async (req, res) => {
   try {
     const user = await db.User.findOne({
@@ -62,8 +65,10 @@ exports.login = async (req, res) => {
     return res.status(500).send({ error: "Erreur serveur" });
   }
 };
+
+/* on trouve l'utilisateur et on renvoie l'objet user*/
 exports.getAccount = async (req, res) => {
-  // on trouve l'utilisateur et on renvoie l'objet user
+  
   try {
     const user = await db.User.findOne({
       where: { id: req.params.id },
@@ -73,8 +78,10 @@ exports.getAccount = async (req, res) => {
     return res.status(500).send({ error: "Erreur serveur" });
   }
 };
+
+/*on récupère tous les users sauf admin*/
 exports.getAllUsers = async (req, res) => {
-  // on envoie tous les users sauf admin
+
   try {
     const users = await db.User.findAll({
       attributes: ["pseudo", "id", "photo", "bio", "email"],
@@ -89,13 +96,14 @@ exports.getAllUsers = async (req, res) => {
     return res.status(500).send({ error: "Erreur serveur" });
   }
 };
+
+/* modifier le profil */
 exports.updateAccount = async (req, res) => {
-  // modifier le profil
   const id = req.params.id;
   try {
     const userId = token.getUserId(req);
     let newPhoto;
-    let user = await db.User.findOne({ where: { id: id } }); // on trouve le user
+    let user = await db.User.findOne({ where: { id: id } }); /* on trouve l'user*/
     if (userId === user.id) {
       if (req.file && user.photo) {
         newPhoto = `${req.protocol}://${req.get("host")}/upload/${
@@ -103,7 +111,7 @@ exports.updateAccount = async (req, res) => {
         }`;
         const filename = user.photo.split("/upload")[1];
         fs.unlink(`upload/${filename}`, (err) => {
-          // s'il y avait déjà une photo on la supprime
+          /* s'il y avait déjà une photo on la supprime*/
           if (err) console.log(err);
           else {
             console.log(`Deleted file: upload/${filename}`);
@@ -137,6 +145,8 @@ exports.updateAccount = async (req, res) => {
     return res.status(500).send({ error: "Erreur serveur" });
   }
 };
+
+/*supprimer un compte */
 exports.deleteAccount = async (req, res) => {
   try {
     const id = req.params.id;
@@ -144,12 +154,11 @@ exports.deleteAccount = async (req, res) => {
     if (user.photo !== null) {
       const filename = user.photo.split("/upload")[1];
       fs.unlink(`upload/${filename}`, () => {
-        // sil' y a une photo on la supprime et on supprime le compte
         db.User.destroy({ where: { id: id } });
         res.status(200).json({ messageRetour: "utilisateur supprimé" });
       });
     } else {
-      db.User.destroy({ where: { id: id } }); // on supprime le compte
+      db.User.destroy({ where: { id: id } }); 
       res.status(200).json({ messageRetour: "utilisateur supprimé" });
     }
   } catch (error) {

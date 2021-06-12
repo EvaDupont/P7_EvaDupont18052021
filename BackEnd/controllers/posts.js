@@ -1,7 +1,10 @@
 const token = require("../middleware/token");
-const db = require("../models"); // accès tables
+const db = require("../models"); /* importe la structure du schema sauce */
+
+/*package qui permet de modifier ou supprimer des fichiers */
 const fs = require("fs"); //
 
+/* Récupérer tous les posts*/
 exports.getAllPosts = async (req, res) => {
   try {
     const posts = await db.Post.findAll({
@@ -36,7 +39,8 @@ exports.getAllPosts = async (req, res) => {
     });
   }
 };
-// afficher le sposts les plus likés
+
+/* afficher les posts les plus likés*/
 exports.getHotPosts = async (req, res) => {
   try {
     const posts = await db.Post.findAll({
@@ -80,14 +84,16 @@ exports.getHotPosts = async (req, res) => {
     res.status(200).send(posts);
   } catch (error) {
     return res.status(500).send({
-      error: "Une erreur est survenu lors de la récupération des posts ",
+      error: "Une erreur est survenue lors de la récupération des posts ",
     });
   }
 };
+
+/*récupération d'un seul post*/
 exports.getOnePost = async (req, res) => {
   try {
     const post = await db.Post.findOne({
-      // on récupère le post avec l'id fourni en incluant les tables et attributs nécessaires
+      /* on récupère le post avec l'id fourni en incluant les tables et attributs nécessaires*/
       where: { id: req.params.id },
       include: [
         {
@@ -116,6 +122,8 @@ exports.getOnePost = async (req, res) => {
     return res.status(500).send({ error: "Erreur serveur" });
   }
 };
+
+/*création d'un post*/
 exports.createPost = async (req, res) => {
   const userId = token.getUserId(req);
   let imageUrl;
@@ -155,6 +163,8 @@ exports.createPost = async (req, res) => {
     return res.status(500).send({ error: "Erreur serveur" });
   }
 };
+
+/*suppression d'un post*/
 exports.deletePost = async (req, res) => {
   try {
     const userId = token.getUserId(req);
@@ -179,6 +189,7 @@ exports.deletePost = async (req, res) => {
   }
 };
 
+/*modification d'un post*/
 exports.updatePost = async (req, res) => {
   try {
     let newImageUrl;
@@ -216,6 +227,7 @@ exports.updatePost = async (req, res) => {
   }
 };
 
+/*liker un post*/
 exports.likePost = async (req, res, next) => {
   try {
     const userId = token.getUserId(req);
@@ -240,6 +252,8 @@ exports.likePost = async (req, res, next) => {
     return res.status(500).send({ error: "Erreur serveur" });
   }
 };
+
+/* ajouter un commentaire */
 exports.addComment = async (req, res) => {
   try {
     const comment = req.body.commentMessage;
@@ -258,6 +272,8 @@ exports.addComment = async (req, res) => {
     return res.status(500).send({ error: "Erreur serveur" });
   }
 };
+
+/*supprimer un commentaire */
 exports.deleteComment = async (req, res) => {
   try {
     const userId = token.getUserId(req);

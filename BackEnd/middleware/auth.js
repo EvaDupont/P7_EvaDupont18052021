@@ -1,11 +1,19 @@
+/* protéger les routes sélectionnées et vérifier que l'utilisateur est authentifié 
+avant d'autoriser l'envoi de ses requêtes.*/
+
 const jwt = require('jsonwebtoken');
+
+/*- try...catch pour les instructions à exécuter et définit une réponse si l'une de ces instructions provoque une erreur
+  - verifie le token envoyé par le FE : qu'il est valable + que l'user ID = celui du token 
+  - decoder le token ac jsonwebtoken 
+  - recuperer l'user ID et vérifier = celui du token*/
 
 module.exports = (req, res, next) => { 
     try {
-        const token = req.headers.authorization.split(' ')[1]; // on récupère le token de la requête entrante
-        const decodedToken = jwt.verify(token, 'secret'); // on le vérifie
-        const userId = decodedToken.sub;         // on récupère l'id du token
-        if (req.body.userId && req.body.userId !== userId) { // on compare le userid de la requête à celui du token
+        const token = req.headers.authorization.split(' ')[1]; 
+        const decodedToken = jwt.verify(token, 'secret'); 
+        const userId = decodedToken.sub;
+        if (req.body.userId && req.body.userId !== userId) { 
             throw 'User id non valable !';
         } else {
             next();

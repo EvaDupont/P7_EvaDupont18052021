@@ -1,8 +1,9 @@
 const http = require("http");
 const app = require("./app");
 const db = require("./models/index");
+
+/* fonction renvoyant à un port valide*/
 const normalizePort = (val) => {
-  // la fonction normalizeport renvoie un port valide, qu'il soit fourni sous la forme d'un number ou d'un string
   const port = parseInt(val, 10);
   if (isNaN(port)) {
     return val;
@@ -15,8 +16,8 @@ const normalizePort = (val) => {
 const port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
 
+/*recherche les erreurs et les enregistre sur le serveur */
 const errorHandler = (error) => {
-  // la fonction errorHandler  recherche les différentes erreurs et les gère de manière appropriée. Elle est ensuite enregistrée dans le serveur ;
   if (error.syscall !== "listen") {
     throw error;
   }
@@ -48,5 +49,5 @@ db.sequelize.sync().then(function () {
     console.log("Listening on " + bind);
   });
   server.listen(port);
-  require("./config/admin"); // la fonction setAdmin est appelée
-}); // un écouteur d'évènements est également enregistré, consignant le port ou le canal nommé sur lequel le serveur s'exécute dans la console.
+  require("./config/admin"); /*appelle la fonction setAdmin */
+}); 

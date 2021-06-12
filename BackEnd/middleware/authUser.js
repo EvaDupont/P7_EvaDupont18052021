@@ -1,23 +1,19 @@
-const emailValidator = require("email-validator");
-const passwordValidator = require("password-validator");
+const emailValidator = require("email-validator");/*verifie la forme de l'email*/
+const passwordValidator = require("password-validator");/*crypte le mdp*/
 
 exports.valid = (req, res, next) => {
-  // on vérifie le password et l'email
+  
   const passwordSchema = new passwordValidator();
   passwordSchema
     .is()
-    .min(8) // Minimum length 8
+    .min(8) /* longueur mini 8*/
     .is()
-    .max(20) // Maximum length 20
+    .max(20) /* longueur maxi 20 */
     .has()
-    .uppercase() // Must have uppercase letters
+    .uppercase() /* doit contenir des majuscules */
     .has()
-    .lowercase() // Must have lowercase letters
-    .has()
-    .not()
-    .symbols(); // Has no symbols
-  //.has().not().spaces()
-  // Should not have spaces is a wrong rule to apply
+    .lowercase() /* doit contenir des minuscules */
+    .has().not().spaces(); /* ne doit pas contenir d'espace */
 
   if (
     !emailValidator.validate(req.body.email) ||
@@ -25,7 +21,7 @@ exports.valid = (req, res, next) => {
   ) {
     return res.status(400).send({
       error:
-        "Merci de vérifier ton adresse mail, ton mot de passe doit contenir au minum 8 lettres avec des minuscules et majuscules  ",
+        "Merci de vérifier l'adresse mail. Le mot de passe doit contenir au minimum 8 lettres avec des minuscules et majuscules.",
     });
   } else if (
     emailValidator.validate(req.body.email) ||
@@ -34,8 +30,9 @@ exports.valid = (req, res, next) => {
     next();
   }
 };
+
+/* vérification du pseudo */
 exports.checkPseudo = (req, res, next) => {
-  // on vérifie le pseudo
   const regex = /^[a-zA-Z0-9_]{3,30}$/; // Lettres, espaces et doit être entre 4 et 30 caractères
   const pseudo = req.body.pseudo;
   if (regex.test(pseudo) === true) {
@@ -43,7 +40,7 @@ exports.checkPseudo = (req, res, next) => {
   } else {
     return res.status(400).send({
       error:
-        "Votre pseudo doit être de 3 caractères minimum et 30 maximum, sont acceptées les lettres, chiffres et underscore (_)  ",
+        "Votre pseudo contenir entre  3 et 30 catractères, sont acceptées les lettres, chiffres et underscore (_)  ",
     });
   }
 };
