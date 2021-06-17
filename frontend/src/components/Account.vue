@@ -97,9 +97,9 @@
               class="d-flex flex-column justify-space-between"
               max-width="70%"
             >
-              <strong>Ta bio: </strong>
+              <strong>Votre bio: </strong>
               <div>
-                <span v-if="!user.bio"> Parle nous de toi 😊</span>
+                <span v-if="!user.bio"> Parlez nous de vous 😊</span>
                 <span class="bio-field">{{ user.bio }}</span>
               </div>
             </div>

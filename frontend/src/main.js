@@ -26,4 +26,4 @@ new Vue({
   render: (h) => h(App),
 }).$mount('#app');
 
-unsync();// Unsyncs store from router
+unsync();

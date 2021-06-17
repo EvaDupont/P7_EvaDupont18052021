@@ -1,5 +1,5 @@
 const express = require('express');/* Framework qui facilite la création de serveur*/
-const morgan = require('morgan');
+const morgan = require('morgan'); /* pour enregistrer les détails de la demande*/
 const cors = require('cors');/* partage de ressources entre serveurs*/
 const path = require('path');/*package pour manipuler et assurer les chemins vers les fichiers et les repertoires du code */
 const helmet = require('helmet'); /* protege l'application de certaines vulnérabilités*/

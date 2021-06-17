@@ -10,7 +10,7 @@
             height="50"
             alt="logo groupomania"
           />
-          <h1 class="font-weight-regular text-center">Le fil d'actu !</h1>
+          <h1 class="font-weight-regular text-center">Votre fil d'actualité : </h1>
           <v-card-title
             class=" d-flex justify-space-between"
             fixed
@@ -93,7 +93,7 @@
       elevation="0"
     >
       <v-card-title class="d-flex justify-center" flat dense dark>
-        <span>Sois le premier à publier un post !</span>
+        <span>Soyez le premier à publier !</span>
       </v-card-title>
     </v-card>
   </v-container>

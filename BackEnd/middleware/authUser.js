@@ -15,18 +15,12 @@ exports.valid = (req, res, next) => {
     .lowercase() /* doit contenir des minuscules */
     .has().not().spaces(); /* ne doit pas contenir d'espace */
 
-  if (
-    !emailValidator.validate(req.body.email) ||
-    !passwordSchema.validate(req.body.password)
-  ) {
+  if (!emailValidator.validate(req.body.email) || !passwordSchema.validate(req.body.password)) {
     return res.status(400).send({
-      error:
+  error:
         "Merci de vérifier l'adresse mail. Le mot de passe doit contenir au minimum 8 lettres avec des minuscules et majuscules.",
     });
-  } else if (
-    emailValidator.validate(req.body.email) ||
-    passwordSchema.validate(req.body.password)
-  ) {
+  } else if (emailValidator.validate(req.body.email) || passwordSchema.validate(req.body.password)) {
     next();
   }
 };
@@ -40,7 +34,7 @@ exports.checkPseudo = (req, res, next) => {
   } else {
     return res.status(400).send({
       error:
-        "Votre pseudo contenir entre  3 et 30 catractères, sont acceptées les lettres, chiffres et underscore (_)  ",
+        "Votre pseudo contenir entre  3 et 30 catractères, sont acceptés les lettres, chiffres et underscore (_)  ",
     });
   }
 };
