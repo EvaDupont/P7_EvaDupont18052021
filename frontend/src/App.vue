@@ -5,7 +5,6 @@
     <v-main>
     
         <router-view></router-view>
-        <!-- Display view pages here based on route -->
      
     </v-main>
     <page-footer  :user="user"></page-footer>

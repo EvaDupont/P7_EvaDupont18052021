@@ -49,7 +49,7 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    // users
+    /* users*/
     SET_TOKEN(state, token) {
       state.token = token;
       if (token) {
@@ -91,9 +91,9 @@ export default new Vuex.Store({
       state.message = "";
       state.error = "";
     },
-    // end users
+  
 
-    // posts
+    /* posts */
 
     GET_POSTS(state, posts) {
       (state.posts = posts), (state.isLoading = false);
@@ -122,9 +122,9 @@ export default new Vuex.Store({
       state.posts = [...state.posts.filter((element) => element.id !== id)];
       state.message = "post supprimé";
     },
-    // end posts
+    
 
-    // comments
+    /* comments */
     COMMENT_POST(state, comment) {
       state.posts = [comment, ...state.posts];
       state.message = "post commenté";
@@ -133,17 +133,17 @@ export default new Vuex.Store({
       state.posts = [...state.posts.filter((element) => element.id !== id)];
       state.message = "commentaire supprimé";
     },
-    // end comments
+    
 
-    // like
-
+    /* like */
     LIKE_POST(state, like) {
       state.posts = [like, ...state.posts];
     },
-    // end like
+    
   },
+
   actions: {
-    //users
+    /*users*/
     setToken({ commit }, token) {
       commit("SET_TOKEN", token);
     },
@@ -193,10 +193,8 @@ export default new Vuex.Store({
         })
       })
     },
-    // end users
-
-    // posts
-
+   
+    /* posts */
     getPosts({ commit }) {
       PostService.getPosts().then((response) => {
         const posts = response.data;
@@ -253,9 +251,7 @@ export default new Vuex.Store({
         });
     },
 
-    // end posts
-
-    //like
+    /*like*/
     likePost({ commit }, payload) {
       axios
         .post(
@@ -275,9 +271,7 @@ export default new Vuex.Store({
         });
     },
 
-    // end like
-
-    // comment
+    /* comment */
     commentPost({ commit }, payload) {
       axios
         .post(

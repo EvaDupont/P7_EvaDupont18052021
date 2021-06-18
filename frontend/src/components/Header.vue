@@ -1,6 +1,7 @@
+<!-- page vue.js pour le header -->
+
 <template>
   <nav>
-    <!-- Start of app toolbar -->
     <v-app-bar app dark>
       <v-toolbar-title class="headline text-uppercase">
         <router-link to="/">

@@ -20,7 +20,7 @@
             <br>
            
             <br>
-             Edu - Admin Gardienne  du réseau 
+             Edu - Admin et gardienne du réseau 
             <br>
         </p>
       </v-flex>

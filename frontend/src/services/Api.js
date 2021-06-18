@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "axios"; /* bibliothèque JavaScript fonctionnant comme un client HTTP, elle permet de communiquer avec des API en utilisant des requêtes*/
 import store from "../store/store";
 
 export default () => {

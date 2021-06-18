@@ -29,13 +29,13 @@ a {
   }
 }
 
-//header
+/*header*/
 .photo-header {
   width: 32px !important;
   height: 32px !important;
   
 }
-//footer
+/*footer*/
 .footer {
   display: flex;
   justify-content: space-between;
@@ -45,8 +45,9 @@ a {
   width: 100%;
 }
 
-/////////containers
-//feed
+/*containers*/
+
+/*feed*/
 .feed-container {
   margin-bottom: 50px;
   margin-left: 0 !important;
@@ -66,10 +67,9 @@ a {
 .bloc2 {
 position: relative;
 margin-top: 180px;
-
- 
 }
-//others
+
+/*others*/
 .signup-container {
   display: flex;
   justify-content: center;
@@ -104,7 +104,7 @@ margin-top: 180px;
   }
 }
 
-//posts
+/* les posts */
 
 .post-box {
   height: 100%;
@@ -169,11 +169,13 @@ background-color: white!important;
     margin-top: 0.33rem;
   }
 }
-//new post
+
+/*new post*/
 .title-input {
   width: 500px !important;
 }
-//statut
+
+/*statut*/
 .bloc-statut {
   display: flex;
   align-items: center;

@@ -1,3 +1,6 @@
+<!-- page vue.js pour la connexion de l'user à l'appli -->
+
+
 <template>
   <v-container fluid class="signup-container ">
     <v-layout row class="signup-box">

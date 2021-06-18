@@ -1,3 +1,5 @@
+<!-- page vue.js pour la création d'un nouveau post par l'user -->
+
 <template>
   <v-container fluid class="post-box">
     <v-card class="mx-auto post-card" max-width="600">

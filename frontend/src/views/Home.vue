@@ -1,3 +1,5 @@
+<!-- page d'accueil -->
+
 <template>
   <v-container class="home-container">
     <v-row class="text-center bandeau">
