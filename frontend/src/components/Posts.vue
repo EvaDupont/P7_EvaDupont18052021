@@ -1,3 +1,5 @@
+<!-- page des posts-->
+
 <template>
   <div>
     <v-card class="posts-card mx-auto mt-4 mb-4 pb-5" round elevation="2">
@@ -13,7 +15,7 @@
               <v-icon
                 role="avatar personnalisé"
                 v-else-if="
-                  post.User === null &&
+                  post.User !== null &&
                     post.User.id === $store.state.user.id
                 "
                 color="pink"
@@ -24,8 +26,9 @@
                 >$vuetify.icons.account</v-icon
               >
             </v-avatar>
-            <div class="nom-date mt-3">
-              <span class="pseudo text-left ml-5">{{ post.User.pseudo }}</span>
+            <div class="nom-date mt-3" >
+
+              <span class="pseudo text-left ml-5" >{{ post.User.pseudo }}</span>
               <span class="date ml-5 text-left">{{
                 post.createdAt | moment("calendar")
               }}</span>
@@ -194,7 +197,8 @@
 
                   <v-list-item-content class="comment_body d-flex ">
                     <strong
-                      v-html="comment.User"
+                      v-if="comment.User !== null"
+                      v-html="comment.User.pseudo"
                       class="pr-5 text-left  pseudo comment__pseudo"
                     ></strong>
                     <span
@@ -298,14 +302,12 @@ export default {
       this.$router.push(`posts/${id}`);
     },
     onSubmitComment(id) {
-      this.$store.dispatch("getPosts");
       this.$store.dispatch("commentPost", {
         id: id,
         data: this.data,
       });
       this.data.commentMessage = "";
       this.$store.dispatch("getPosts");
-      this.$store.dispatch("getPostById", this.post.id);
     },
 
     deleteComment(id) {

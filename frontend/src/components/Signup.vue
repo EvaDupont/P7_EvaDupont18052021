@@ -1,3 +1,5 @@
+<!-- page pour s'inscrire sur le réseau -->
+
 <template>
   <v-container fluid class="signup-container ">
     <v-layout row class="signup-box">

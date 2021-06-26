@@ -257,7 +257,7 @@ exports.likePost = async (req, res, next) => {
 exports.addComment = async (req, res) => {
   try {
     const comment = req.body.commentMessage;
-    const pseudo = req.body.commentPseudo;
+    const pseudo = req.body.commentPseudo.pseudo;
     const newComment = await db.Comment.create({
       message: comment,
       pseudo: pseudo,
@@ -269,6 +269,7 @@ exports.addComment = async (req, res) => {
       .status(201)
       .json({ newComment, messageRetour: "votre commentaire est publié" });
   } catch (error) {
+    console.error(error)
     return res.status(500).send({ error: "Erreur serveur" });
   }
 };

@@ -1,3 +1,5 @@
+<!-- page listant les comptes créés-->
+
 <template>
   <v-container fluid class="signup-container">
     <div class="account"> 
@@ -116,7 +118,7 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped lang="scss">
 .v-avatar {
   margin-right: 1em;

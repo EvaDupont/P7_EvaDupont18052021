@@ -1,3 +1,5 @@
+<!-- page lorsque de smodif sont a faire sur le post -->
+
 <template>
   <v-container fluid class="post-box">
     <v-card class="mx-auto post-card" max-width="600">

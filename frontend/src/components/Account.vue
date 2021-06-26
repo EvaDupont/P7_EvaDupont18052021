@@ -1,3 +1,5 @@
+<!-- page du compte de l'user-->
+
 <template>
   <v-container fluid class="signup-container">
     <v-layout v-if="$store.state.isLoggedIn" row class="account-box mb-5">

@@ -25,7 +25,7 @@ export default {
   },
 
   commentPost(id, data) {
-    return Api().post("posts/" + id + "/comments", data);
+    return Api().post("posts/" + id + "/comments", data); 
   },
 
   deleteComment(id) {

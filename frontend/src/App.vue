@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <!-- header -->
+  
     <page-header :user="user"    ></page-header>
     <v-main>
     
