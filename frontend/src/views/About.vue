@@ -15,7 +15,7 @@
               <li> personnaliser votre profil avec une photo et renseigner votre bio si vous le souhaitez,</li>
               <li> poster, commenter et liker les posts de votre fil d'actualité </li>
           </ul>
-
+          <br>
           Soyez bienveillant et respectueux les uns avec les autres. Je veillerai au respect des règles de bienséances sociales 😊 !
             <br>
            

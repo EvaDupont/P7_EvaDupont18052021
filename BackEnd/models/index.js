@@ -1,6 +1,6 @@
 /*installé avec sequelize init */
 
-'use strict'; /* mode strict JS peut eliminer des erreurs silencieuses JS, permet une exécution plus rapide si prb lecture par le navigateur */
+'use strict'; /* mode strict JS peut éliminer des erreurs silencieuses JS, permet une exécution plus rapide si prb lecture par le navigateur */
 
 const fs = require('fs');
 const path = require('path');

@@ -10,7 +10,7 @@ const MIME_TYPES = {
 };
 
 /*configuration standard de multer : permet de gerer 
-le stockage des images utilisées dans la création des sauces 
+le stockage des images utilisées dans la création des posts 
 - destination : savoir ou les stocker,
 - filename : pour creer le nom de l'image a stocker*/
 const storage = multer.diskStorage({

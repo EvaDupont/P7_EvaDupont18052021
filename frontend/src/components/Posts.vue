@@ -6,14 +6,14 @@
           <v-card-title class="post-title">
             <v-avatar class="profil-post" size="52px">
               <img
-                v-if="post.User.photo"
+                v-if="post.User"
                 :src="post.User.photo"
                 alt="Photo de profil"
               />
               <v-icon
                 role="avatar personnalisé"
                 v-else-if="
-                  post.User.photo === null &&
+                  post.User === null &&
                     post.User.id === $store.state.user.id
                 "
                 color="pink"
@@ -105,14 +105,14 @@
         </div>
         <v-divider></v-divider>
         <div class="d-flex flex-column align-end pr-3">
-          <div>{{ post.Comments.length }} comments</div>
+          <div>{{ post.Comments.length }} commentaire(s) </div>
           <div>{{ post.Likes.length }} j'aime</div>
         </div>
         <v-divider></v-divider>
         <v-card-actions class="pt-5  pr-4 d-flex justify-space-between">
           <div class=" d-flex justify-md-space-between">
             <v-btn @click="show = !show" text aria-label="accès commentaires">
-              Commentaires
+              Commentaire(s)
             </v-btn>
             <v-btn icon @click="show = !show" aria-label="accès commentaires">
               <v-icon>{{
@@ -173,13 +173,13 @@
                 <v-list-item class="comment">
                   <v-list-item-avatar class="comment_photo">
                     <img
-                      v-if="comment.User.photo !== null"
+                      v-if="comment.User !== null"
                       :src="comment.User.photo"
                       alt="Photo de profil"
                     />
                     <v-icon
                       v-else-if="
-                        comment.User.photo === null &&
+                        comment.User === null &&
                           comment.UserId === $store.state.user.id
                       "
                       color="pink"
@@ -194,7 +194,7 @@
 
                   <v-list-item-content class="comment_body d-flex ">
                     <strong
-                      v-html="comment.User.pseudo"
+                      v-html="comment.User"
                       class="pr-5 text-left  pseudo comment__pseudo"
                     ></strong>
                     <span
@@ -260,7 +260,7 @@ export default {
       errorMessage: null,
       data: {
         commentMessage: "",
-        commentPseudo: this.$store.state.user.pseudo,
+        commentPseudo: this.$store.state.user,
       },
     };
   },

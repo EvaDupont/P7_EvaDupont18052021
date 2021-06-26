@@ -1,5 +1,5 @@
 const token = require("../middleware/token");
-const db = require("../models"); /* importe la structure du schema sauce */
+const db = require("../models"); /* importe la structure des modeles */
 
 /*package qui permet de modifier ou supprimer des fichiers */
 const fs = require("fs"); //
@@ -240,7 +240,7 @@ exports.likePost = async (req, res, next) => {
         { where: { UserId: userId, PostId: postId } },
         { truncate: true, restartIdentity: true }
       );
-      res.status(200).send({ messageRetour: "vou n'aimez plus ce post" });
+      res.status(200).send({ messageRetour: "vous n'aimez plus ce post" });
     } else {
       await db.Like.create({
         UserId: userId,
