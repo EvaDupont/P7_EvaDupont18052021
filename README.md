@@ -1,8 +1,8 @@
 # Projet 7 - Groupomania !
 
-7ème et dernier projet de la formation développeur web d'Openclassrooms.
-Créer un réseau social d'entreprise.
-La stack utilisée pour ce projet:
+Dernier projet de la formation développeur web d'Openclassrooms : Créer un réseau social d'entreprise.
+
+Modules utilisés pour ce projet:
 
 - VueJs + vuex + vuetify
 - NodeJs + express + sequelize
@@ -35,23 +35,17 @@ puis
 ## Base de données
 
 Se connecter au serveur **MySql** de votre choix.
-Exécuter la commande: `CREATE DATABASE socialnetwork;`
-Vérifiez les identifiants dans le fichier config.json du dossier Backend puis importer le fichier socialnetwork.sql s'il vous a été fourni :
+Exécuter la commande: `CREATE DATABASE rseGP;`
+Vérifiez les identifiants dans le fichier config.json du dossier Backend puis importer le fichier rseGP.sql s'il vous a été fourni :
 
-    mysql -u root -p socialnetwork < socialnetwork.sql
+    mysql -u root -p rseGP < rseGP.sql
 
-Il faut remplacer `socialnetwork.sql` par le chemin du fichier dans votre machine.
+Il faut remplacer `rseGP.sql` par le chemin du fichier dans votre machine.
 Vous pouvez lancer le projet sans importer le fichier.sql, au lancement de l'application un compte administrateur est automatiquement créé (les identifiants vous on été fourni dans un fichier Id_Admin).
-
-## Guidelines API
-
-Retrouver le guide pour les requêtes à l'Api sur Postman :
-
-- https://documenter.getpostman.com/view/12325951/TVYDeeqz
 
 ## Utilisation
 
-Pour s'inscrire sur le social network de Groupomania, il vous faut renseigner :
+Pour s'inscrire sur le réseau social de Groupomania, il vous faut renseigner :
 
 - Un pseudo (entre 3 et 30 caractères)
 - Une adresse mail valide
